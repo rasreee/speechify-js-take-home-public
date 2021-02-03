@@ -141,3 +141,4 @@ export interface SpeechifyClient {
 Your submission will be evaluated according to:
 1. The quality of the implementation - is the code clear, concise, and correct in implementing the desired experience?
 2. The quality of the Listening experience - is it the best listening experience for each item of Data on this simple interface?
+3. The quality of the listening experience under different circumstances. e.g try playing the audio as the user is in the car or multi-tasking. What does great experience in these situations mean?
