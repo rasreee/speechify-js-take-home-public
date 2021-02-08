@@ -46,7 +46,7 @@ type Data = {
 
 Note that with the `type` and `source` properties together,  we should be able to determine how to extract the information contained in the `data` property at high fidelity. This requires an assumption that data derived from a given `source` will have consistent structure, but this is generally a reasonable assumption.
 
-Below are some examples showing how we can use this model to express a wide variety of data. 
+Below are some examples showing how we can use this model to express a wide variety of data. Note that these are just examples for you to get an idea of how the `Data` looks like. In production `Data` can be of any size, and your system needs to handle it in the best way.
 ```typescript
 const text: Data = {
     type: DataType.TXT,
@@ -141,3 +141,4 @@ export interface SpeechifyClient {
 Your submission will be evaluated according to:
 1. The quality of the implementation - is the code clear, concise, and correct in implementing the desired experience?
 2. The quality of the Listening experience - is it the best listening experience for each item of Data on this simple interface?
+3. The quality of the listening experience under different circumstances. e.g try playing the audio as the user is in the car or multi-tasking. What does great experience in these situations mean?
