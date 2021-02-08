@@ -20,7 +20,7 @@ const port: number = Number(process.env.PORT) || 8050;
 const speechify = new Speechify();
 
 app.post("/api/addToQueue", (req, res) => {
-  const result = speechify.addToQueue(req.body.data);
+  const result = speechify.addToQueue(req.body);
   res.send({ success: result });
 });
 
