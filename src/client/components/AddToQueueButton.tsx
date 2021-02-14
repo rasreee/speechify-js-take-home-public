@@ -7,17 +7,18 @@ type Props = {
   type: DataType;
   generator: DataGenerator;
   client: SpeechifyClient;
+  onError: (message: string) => void;
 };
 
-export const AddToQueueButton = (props: Props) => {
+export const AddToQueueButton = ({ type, onError, generator, client }: Props) => {
   const [loading, setLoading] = useState(false);
   const onClick = async () => {
     setLoading(true);
-    const data = props.generator.getData(props.type);
+    const data = generator.getData(type);
     try {
-      await props.client.addToQueue(data);
+      await client.addToQueue(data);
     } catch (error) {
-      setError(`Oops! Failed to add ${props.type} to the queue\nError: ${error}`);
+      onError(`Oops! Failed to add ${type} to the queue\${error}`);
     } finally {
       // simulate loading
       setTimeout(() => setLoading(false), 500);
@@ -25,7 +26,7 @@ export const AddToQueueButton = (props: Props) => {
   };
   return (
     <div onClick={onClick} className="add-to-queue-button">
-      {loading ? "Submitting..." : `Add ${props.type} Data to Queue`}
+      {loading ? "Submitting..." : `Add ${type} Data to Queue`}
     </div>
   );
 };

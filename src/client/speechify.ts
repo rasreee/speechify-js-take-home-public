@@ -7,11 +7,10 @@ import {
 } from "@common/client";
 
 export default class SpeechifyClientImpl implements SpeechifyClient {
-  constructor(host: string) {}
+  constructor(host: string) { }
 
   async addToQueue(data: Data): Promise<boolean> {
-    window.alert("addToQueue client method not implemented");
-    throw new Error("method not implemented");
+    throw new Error('test error')
   }
 
   play(): void {
@@ -30,6 +29,6 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
 
   subscribe(listener: (event: SpeechifyClientEvent) => void): () => void {
     window.alert("subscribe client method not implemented");
-    return () => {};
+    return () => { };
   }
 }

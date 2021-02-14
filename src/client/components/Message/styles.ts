@@ -1,4 +1,4 @@
-import theme from 'client/theme';
+import theme from '../../theme';
 import styled from 'styled-components';
 type Props = {
     error?: boolean;

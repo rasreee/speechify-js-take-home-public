@@ -17,9 +17,32 @@ type ClientStateEvent = {
 export type SpeechifyClientEvent = ClientStateEvent;
 
 export interface SpeechifyClient {
+  /**
+   *  Sends RPC to Speechify Server
+   * @param data
+   */
   addToQueue(data: Data): Promise<boolean>;
+
+  /**
+   * Initiates or resumes **audio playback** of content streamed from Listening Queue
+   */
   play(): void;
+
+  /**
+   * Returns the current state of the client
+   */
   pause(): void;
+
+
+  /**
+   * Returns the current state of the client
+   */
   getState(): ClientState;
-  subscribe(listener: (event: SpeechifyClientEvent) => void): () => void;
+
+  /**
+   * Registers a callback for state change events on the Speechify Client
+   * Returns a callback that cancels the subscription
+   * @param listener
+   */
+  subscribe(listener: (event: ClientStateEvent) => void): () => void;
 }
