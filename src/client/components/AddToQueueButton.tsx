@@ -16,6 +16,8 @@ export const AddToQueueButton = (props: Props) => {
     const data = props.generator.getData(props.type);
     try {
       await props.client.addToQueue(data);
+    } catch (error) {
+      setError(`Oops! Failed to add ${props.type} to the queue\nError: ${error}`);
     } finally {
       // simulate loading
       setTimeout(() => setLoading(false), 500);
