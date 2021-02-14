@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { DataType } from "@common";
-import * as ReactDOM from "react-dom";
 import DataGenerator from "../generator";
 import { SpeechifyClient } from "@common/client";
 
