@@ -5,12 +5,35 @@ import {
   SpeechifyClientEvent,
   ClientEventType,
 } from "@common/client";
+import axios, { AxiosResponse } from "axios";
+
+type Endpoints = {
+  addToQueue: string;
+  getNextChunk: string;
+}
 
 export default class SpeechifyClientImpl implements SpeechifyClient {
-  constructor(host: string) { }
+  context: string = 'SpeechifyClient'
+  host: string
+  endpoints: Endpoints
+  constructor(host: string) {
+    this.host = host;
+    this.endpoints = {
+      addToQueue: `${host}/api/addToQueue`,
+      getNextChunk: `${host}/api/getNextChunk`,
+    }
+  }
 
   async addToQueue(data: Data): Promise<boolean> {
-    throw new Error('test error')
+    const endpoint = this.endpoints.addToQueue
+    try {
+      const response = await axios.post(endpoint, data)
+      this.logSuccess(response)
+      return true;
+    } catch (error) {
+      this.handleError(error)
+    }
+    return false
   }
 
   play(): void {
@@ -31,4 +54,13 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
     window.alert("subscribe client method not implemented");
     return () => { };
   }
+
+  handleError(error: any) {
+    console.log('🆘 ', this.context, ": ", error)
+    throw error
+  }
+
+  logSuccess = (response: AxiosResponse) =>
+    console.log(`💚`, this.context, ": ", response)
+
 }
