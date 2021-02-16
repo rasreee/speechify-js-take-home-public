@@ -1,3 +1,4 @@
+
 import { action, makeObservable, observable } from 'mobx'
 import { DataType } from '../common'
 import SpeechifyClient from './speechify-client'
@@ -9,8 +10,23 @@ export type ViewModelProps = {
 
 export default class ViewModel {
     client: SpeechifyClient
-
     generator: any
+
+    @observable
+    isPlaying = false
+
+    @observable
+    error = ''
+
+    @observable
+    isJSONLoading = false
+
+
+    @observable
+    isHTMLLoading = false
+
+    @observable
+    isTXTLoading = false
 
     constructor({ client, generator }: ViewModelProps) {
         this.client = client
@@ -18,40 +34,23 @@ export default class ViewModel {
         makeObservable(this)
     }
 
-    @observable
-    isPlaying = false
-
     @action
     setIsPlaying = (val: boolean) => (this.isPlaying = val)
-
-    @observable
-    error = ''
 
     @action
     setError = (val: string) => (this.error = val)
 
-    @observable
-    isHTMLLoading = false
-
     @action
     setHTMLLoading = (val: boolean) => (this.isHTMLLoading = val)
-
-    @observable
-    isJSONLoading = false
 
     @action
     setJSONLoading = (val: boolean) => (this.isJSONLoading = val)
 
-    @observable
-    isTXTLoading = false
-
     @action
     setTXTLoading = (val: boolean) => (this.isTXTLoading = val)
 
-    handlePlayClick = () => {
-        this.isPlaying ? this.client.pause() : this.client.play()
-        this.setIsPlaying(!this.isPlaying)
-    }
+    handlePlay = () => this.client.play()
+    handlePause = () => this.client.pause()
 
     setLoading = (type: DataType, val: boolean) => {
         switch (type) {
@@ -64,7 +63,7 @@ export default class ViewModel {
         }
     }
 
-    handleAddToQueueClick = async (type: DataType) => {
+    handleAddToQueueClick = async (type: DataType): Promise<void> => {
         this.setLoading(type, true)
         const data = this.generator.getData(type)
         try {

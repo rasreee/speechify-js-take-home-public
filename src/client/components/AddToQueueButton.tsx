@@ -2,21 +2,21 @@ import React, { useState, MouseEvent } from 'react'
 import { DataType } from '@common'
 import { SpeechifyClient } from '@common/client'
 import DataGenerator from '../generator'
+import AddToQueueButtonViewModel from '../view-models/AddToQueueButtonViewModel'
+import { observer } from 'mobx-react-lite'
 
 type Props = {
-    type: DataType
-    onClick: (type: DataType) => void
-    loading: boolean
+    viewModel: AddToQueueButtonViewModel
 }
 
-export const AddToQueueButton = ({ type, onClick, loading }: Props) => {
+export const AddToQueueButton = observer(({ viewModel }: Props) => {
     const handleClick = async (e: MouseEvent) => {
         e.preventDefault()
-        onClick(type)
+        viewModel.handleClick()
     }
     return (
         <div onClick={handleClick} className="add-to-queue-button">
-            {loading ? 'Submitting...' : `Add ${type} Data to Queue`}
+            {viewModel.isLoading ? 'Submitting...' : `Add ${viewModel.type} Data to Queue`}
         </div>
     )
-}
+})

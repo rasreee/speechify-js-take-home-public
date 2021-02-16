@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import React from 'react'
-import App from '../app'
+import App from '../App'
 import DataGenerator from '../generator'
 import SpeechifyClient from '../speechify-client'
 

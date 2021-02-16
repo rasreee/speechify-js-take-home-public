@@ -53,19 +53,14 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
     }
 
     play(): void {
-        this.setState(ClientState.PLAYING)
     }
 
     pause(): void {
-        window.alert('pause client method not implemented')
-        throw new Error('method not implemented')
     }
 
-    _state: ClientState = ClientState.NOT_PLAYING
-
-    setState = (state: ClientState) => (this._state = state)
-
-    getState = (): ClientState => this._state
+    getState(): ClientState {
+        return ClientState.NOT_PLAYING
+    }
 
     subscriber: ClientEventListener | null = null
 
@@ -84,7 +79,7 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
     }
 
     logSuccess = (response: AxiosResponse) =>
-        console.log('💚 SUCCESS:', this.context, ': ', response)
+        console.log('💚 SUCCESS:', this.context, ': ', response.config.url)
 
     connect = async (): Promise<boolean> => {
         const response = await this.client.get('/')

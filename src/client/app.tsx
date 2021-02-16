@@ -1,9 +1,11 @@
-import * as React from 'react'
+import React from 'react'
 import { observer } from 'mobx-react-lite'
 import { DataType } from '../common'
 import SpeechifyClient from './speechify-client'
 import { PlayButton, AddToQueueButton, Message } from './components'
 import ViewModel from './view-model'
+import PlayButtonViewModel from './view-models/PlayButtonViewModel'
+import AddToQueueButtonViewModel from './view-models/AddToQueueButtonViewModel'
 
 type Props = {
     client: SpeechifyClient
@@ -12,30 +14,26 @@ type Props = {
 
 const App: React.FC<Props> = observer(({ client, generator }) => {
     const viewModel = new ViewModel({ client, generator })
+    const playButtonViewModel = new PlayButtonViewModel(viewModel)
+    const jsonButtonViewModel = new AddToQueueButtonViewModel(viewModel, DataType.JSON)
+    const txtButtonViewModel = new AddToQueueButtonViewModel(viewModel, DataType.TXT)
+    const htmlButtonViewModel = new AddToQueueButtonViewModel(viewModel, DataType.HTML)
 
     return (
         <>
             <h1>Speechify CarPlay</h1>
             <PlayButton
-                isPlaying={viewModel.isPlaying}
-                onClick={viewModel.handlePlayClick}
+                viewModel={playButtonViewModel}
             />
             <div className="add-to-queue-buttons">
                 <AddToQueueButton
-                    type={DataType.HTML}
-                    onClick={viewModel.handleAddToQueueClick}
-                    loading={viewModel.isHTMLLoading}
-                />
-
-                <AddToQueueButton
-                    type={DataType.TXT}
-                    onClick={viewModel.handleAddToQueueClick}
-                    loading={viewModel.isTXTLoading}
+                    viewModel={htmlButtonViewModel}
                 />
                 <AddToQueueButton
-                    type={DataType.JSON}
-                    onClick={viewModel.handleAddToQueueClick}
-                    loading={viewModel.isJSONLoading}
+                    viewModel={txtButtonViewModel}
+                />
+                <AddToQueueButton
+                    viewModel={jsonButtonViewModel}
                 />
             </div>
             <Message error>{viewModel.error}</Message>

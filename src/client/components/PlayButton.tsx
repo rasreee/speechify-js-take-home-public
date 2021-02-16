@@ -5,24 +5,27 @@ import {
     ClientEventType,
     ClientState,
 } from '@common/client'
+import { observer } from 'mobx-react-lite';
+import PlayButtonViewModel from '../view-models/PlayButtonViewModel';
 
 type Props = {
-    isPlaying: boolean
-    onClick: () => void
+    viewModel: PlayButtonViewModel;
 }
 
-export const PlayButton = ({ isPlaying, onClick }: Props) => {
+export const PlayButton = observer(({ viewModel }: Props) => {
+
     const handleClick: MouseEventHandler = (e) => {
         e.preventDefault()
-        onClick()
+        viewModel.handleClick()
     }
-    return isPlaying ? (
+
+    return viewModel.isPlaying ? (
         <button className="main-control pause" onClick={handleClick}>
             PAUSE
         </button>
     ) : (
-        <button className="main-control play" onClick={handleClick}>
-            PLAY
-        </button>
-    )
-}
+            <button className="main-control play" onClick={handleClick}>
+                PLAY
+            </button>
+        )
+})

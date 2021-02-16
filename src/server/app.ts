@@ -7,6 +7,7 @@ const startServer = () => {
     app.listen(port, () => {
         console.log(`\n\n👨‍🦰 SERVER RUNNING ON PORT=${port}`)
     })
+    return app;
 }
 
-startServer()
+export default startServer()
