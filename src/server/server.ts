@@ -9,7 +9,7 @@ export default function createServer() {
   const app: Application = express();
 
   app.use(cors());
-  app.use(bodyParser.json());
+  app.use(bodyParser.json({ type: ['application/json', 'application/*+json'] }));
   app.use(bodyParser.urlencoded({ extended: true }));
 
   app.get("/", (req: Request, res: Response, next: NextFunction) => {
