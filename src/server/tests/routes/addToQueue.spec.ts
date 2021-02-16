@@ -1,15 +1,15 @@
-import request from "supertest";
+import request from 'supertest'
 
-import createServer from "../../server";
-import { Data, DataType } from "../../../common";
+import createServer from '../../server'
+import { Data, DataType } from '../../../common'
 
-const app = createServer();
+const app = createServer()
 
-describe("addToQueue route", function () {
-    it("/api/addToQueue responds with 200", function (done) {
+describe('addToQueue route', () => {
+    it('/api/addToQueue responds with 200', (done) => {
         const data: Data = {
             type: DataType.HTML,
-            source: "https://speechify.com/welcome",
+            source: 'https://speechify.com/welcome',
             data: `<html>
             <body>
                 <div id="speechify-heading">
@@ -21,6 +21,6 @@ describe("addToQueue route", function () {
             </body>
         </html>`,
         }
-        request(app).post("/api/addToQueue").send(data).expect(200, done);
-    });
-});
+        request(app).post('/api/addToQueue').send(data).expect(200, done)
+    })
+})

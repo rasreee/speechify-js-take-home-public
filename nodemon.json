@@ -1,14 +1,6 @@
 {
-  "ignore": [
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "node_modules",
-    "src/client"
-  ],
-  "watch": [
-    "src/server",
-    "src/common"
-  ],
-  "exec": "tsc -p tsconfig.server.json && node dist/server/",
-  "ext": "ts"
+    "ignore": ["**/*.test.ts", "**/*.spec.ts", "node_modules", "src/client"],
+    "watch": ["src/server", "src/common"],
+    "exec": "tsc -p tsconfig.server.json && node dist/server/index.js",
+    "ext": "ts"
 }

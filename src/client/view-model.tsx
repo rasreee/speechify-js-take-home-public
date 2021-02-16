@@ -1,75 +1,78 @@
-import { DataType } from "../common";
-import SpeechifyClient from "./speechify";
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable } from 'mobx'
+import { DataType } from '../common'
+import SpeechifyClient from './speechify-client'
 
 export type ViewModelProps = {
-    client: SpeechifyClient;
-    generator: any;
+    client: SpeechifyClient
+    generator: any
 }
 
 export default class ViewModel {
-    client: SpeechifyClient;
-    generator: any;
+    client: SpeechifyClient
+
+    generator: any
+
     constructor({ client, generator }: ViewModelProps) {
-        this.client = client;
-        this.generator = generator;
+        this.client = client
+        this.generator = generator
         makeObservable(this)
     }
 
     @observable
-    isPlaying = false;
+    isPlaying = false
 
     @action
-    setIsPlaying = (val: boolean) => this.isPlaying = val;
+    setIsPlaying = (val: boolean) => (this.isPlaying = val)
 
     @observable
-    error = '';
+    error = ''
 
     @action
-    setError = (val: string) => this.error = val;
+    setError = (val: string) => (this.error = val)
 
     @observable
-    isHTMLLoading = false;
+    isHTMLLoading = false
 
     @action
-    setHTMLLoading = (val: boolean) => this.isHTMLLoading = val;
+    setHTMLLoading = (val: boolean) => (this.isHTMLLoading = val)
 
     @observable
-    isJSONLoading = false;
+    isJSONLoading = false
 
     @action
-    setJSONLoading = (val: boolean) => this.isJSONLoading = val;
+    setJSONLoading = (val: boolean) => (this.isJSONLoading = val)
 
     @observable
-    isTXTLoading = false;
+    isTXTLoading = false
 
     @action
-    setTXTLoading = (val: boolean) => this.isTXTLoading = val;
-
+    setTXTLoading = (val: boolean) => (this.isTXTLoading = val)
 
     handlePlayClick = () => {
         this.isPlaying ? this.client.pause() : this.client.play()
-        this.setIsPlaying(!this.isPlaying);
+        this.setIsPlaying(!this.isPlaying)
     }
 
     setLoading = (type: DataType, val: boolean) => {
         switch (type) {
-            case DataType.HTML: return this.setHTMLLoading(val)
-            case DataType.JSON: return this.setJSONLoading(val)
-            case DataType.TXT: return this.setTXTLoading(val)
+            case DataType.HTML:
+                return this.setHTMLLoading(val)
+            case DataType.JSON:
+                return this.setJSONLoading(val)
+            case DataType.TXT:
+                return this.setTXTLoading(val)
         }
     }
 
     handleAddToQueueClick = async (type: DataType) => {
-        this.setLoading(type, true);
-        const data = this.generator.getData(type);
+        this.setLoading(type, true)
+        const data = this.generator.getData(type)
         try {
-            await this.client.addToQueue(data);
+            await this.client.addToQueue(data)
         } catch (error) {
-            this.setError(`Oops! Failed to add ${type} to the queue\${error}`);
+            this.setError(`Oops! Failed to add ${type} to the queue\n${error}`)
         } finally {
-            // simulate loading
-            setTimeout(() => this.setLoading(type, false), 500);
+            this.setLoading(type, false)
         }
     }
 }

@@ -1,4 +1,3 @@
-
 import { setQueues, BullAdapter } from 'bull-board'
 import createListeningQueue from './createListeningQueue'
 

@@ -1,11 +1,12 @@
-import request from "supertest";
-import { expect } from "chai";
+import request from 'supertest'
+import { expect } from 'chai'
 
-import createServer from "../../server";
-const app = createServer();
+import createServer from '../../server'
 
-describe("server checks", function () {
-  it("server instantiated without error", function (done) {
-    request(app).get("/").expect(200, done);
-  });
-});
+const app = createServer()
+
+describe('server checks', () => {
+    it('server instantiated without error', (done) => {
+        request(app).get('/').expect(200, done)
+    })
+})
