@@ -5,6 +5,7 @@ import cors from 'cors';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import routes from './routes'
 import { createRedisSession } from './sessions';
+import { router } from 'bull-board'
 
 export default function createServer() {
   const app: Application = express();
@@ -18,14 +19,15 @@ export default function createServer() {
   // Handle lost connection
   app.use(function (req, res, next) {
     if (!req.session) {
-      return next(new Error('oh no'))
+      return next(new Error('Lost connection to session...'))
     }
     next()
   })
 
   app.get("/", (req: Request, res: Response, next: NextFunction) => {
     res.send("Hello world!");
-  }); ``
+  });
+  app.use('/admin/queues', router)
   app.use(routes);
 
   return app;

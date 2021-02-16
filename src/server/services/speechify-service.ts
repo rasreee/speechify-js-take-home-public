@@ -14,6 +14,7 @@ export default class SpeechifyService implements SpeechifyServer {
         console.log('\n🍜 adding to queue: ', JSON.stringify(data))
 
         try {
+            this.client
             this.client.append('listeningData', JSON.stringify(data));
             console.log('\n🍜 REDIS STATE: ', this.client.get('listeningData'))
             return true;

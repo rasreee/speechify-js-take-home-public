@@ -2,14 +2,17 @@ import redis from 'redis'
 import redisMock from 'redis-mock'
 
 export default function createRedisClient() {
+    let client;
     if (process.env.NODE_ENV !== 'mocha') {
-        return redisMock.createClient().on('error', console.error).on('connect', function (err) {
-            console.log('Connected to redis successfully');
-        });
-
+        client = redisMock.createClient()
     }
-    return redis.createClient().on('error', console.error).on('connect', function (err) {
+    if (!client) {
+        client = redis.createClient()
+    }
+
+    client.on('error', console.error)
+    client.on('connect', () => {
         console.log('Connected to redis successfully');
     });
-
+    return client;
 }
