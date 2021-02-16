@@ -1,10 +1,9 @@
 import { Router, Request, Response } from "express";
 import { Data } from "../../common";
-import { createRedisClient } from "../clients";
 import { SpeechifyService } from '../services'
 
 const router = Router();
-const service = new SpeechifyService(createRedisClient())
+const service = new SpeechifyService()
 
 // @route POST /api/addToQueue
 // @desc  Add speech data to queue

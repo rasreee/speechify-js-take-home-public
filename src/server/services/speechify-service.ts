@@ -1,22 +1,18 @@
-import { RedisClient } from 'redis';
-import { Session } from 'express-session'
+import Bull from 'bull'
 
-import Queue from 'bull'
-import { DataType, Data, StreamChunk } from "../../common";
+import { Data, StreamChunk } from "../../common";
 import { SpeechifyServer } from "../../common/server";
+import { createListeningQueue } from '../queue';
 export default class SpeechifyService implements SpeechifyServer {
-    client: RedisClient;
-    constructor(client: RedisClient) {
-        this.client = client;
+    queue: Bull.Queue<Data>;
+    constructor() {
+        this.queue = createListeningQueue();
     }
 
     async addToQueue(data: Data): Promise<boolean> {
         console.log('\n🍜 adding to queue: ', JSON.stringify(data))
-
         try {
-            this.client
-            this.client.append('listeningData', JSON.stringify(data));
-            console.log('\n🍜 REDIS STATE: ', this.client.get('listeningData'))
+            await this.queue.add(data)
             return true;
         } catch (err) {
             console.error('\n🍜 error on addToQueue: ', err)

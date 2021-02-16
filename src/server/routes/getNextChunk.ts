@@ -1,9 +1,8 @@
 import { Router, Request, Response } from "express";
-import { createRedisClient } from "../clients";
 import { SpeechifyService } from '../services'
 
 const router = Router();
-const service = new SpeechifyService(createRedisClient())
+const service = new SpeechifyService()
 
 // @route POST /getNextChunk
 // @desc  Paginate data
