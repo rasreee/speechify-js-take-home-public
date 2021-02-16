@@ -5,7 +5,9 @@ import cors from 'cors';
 import express from 'express';
 
 import Speechify from './speechify';
+import { Data } from '../common';
 
+const api = require('./api')
 
 export default function createServer() {
   const app = express();
@@ -16,17 +18,10 @@ export default function createServer() {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  const speechify = new Speechify();
 
-  app.post("/api/addToQueue", (req, res) => {
-    const result = speechify.addToQueue(req.body);
-    res.send({ success: result });
-  });
+  app.post("/api/addToQueue", api.addToQueue);
 
-  app.get("/api/getNextChunk", (req, res) => {
-    const chunk = speechify.getNextChunk();
-    res.send({ chunk });
-  });
+  app.get("/api/getNextChunk", api.getNextChunk);
 
   return app;
 }

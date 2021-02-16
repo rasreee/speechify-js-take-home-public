@@ -1,11 +1,12 @@
-import { DataType, Data, StreamChunk } from "@common";
-import { SpeechifyServer } from "@common/server";
+import { DataType, Data, StreamChunk } from "../common";
+import SpeechifyServer from "./speechify";
 
 export default class MySpeechify implements SpeechifyServer {
-  constructor() {}
+  queue: Array<Data> = []
+  constructor() { }
 
   addToQueue(data: Data): boolean {
-    console.error("addToQueue not implemented");
+    this.queue.push(data);
     return true;
   }
 
