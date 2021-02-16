@@ -1,31 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, MouseEvent } from "react";
 import { DataType } from "@common";
 import DataGenerator from "../generator";
 import { SpeechifyClient } from "@common/client";
 
 type Props = {
   type: DataType;
-  generator: DataGenerator;
-  client: SpeechifyClient;
-  onError: (message: string) => void;
+  onClick: (type: DataType) => void;
+  loading: boolean;
 };
 
-export const AddToQueueButton = ({ type, onError, generator, client }: Props) => {
-  const [loading, setLoading] = useState(false);
-  const onClick = async () => {
-    setLoading(true);
-    const data = generator.getData(type);
-    try {
-      await client.addToQueue(data);
-    } catch (error) {
-      onError(`Oops! Failed to add ${type} to the queue\${error}`);
-    } finally {
-      // simulate loading
-      setTimeout(() => setLoading(false), 500);
-    }
+export const AddToQueueButton = ({ type, onClick, loading }: Props) => {
+  const handleClick = async (e: MouseEvent) => {
+    e.preventDefault();
+    onClick(type);
   };
   return (
-    <div onClick={onClick} className="add-to-queue-button">
+    <div onClick={handleClick} className="add-to-queue-button">
       {loading ? "Submitting..." : `Add ${type} Data to Queue`}
     </div>
   );

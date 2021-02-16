@@ -1,4 +1,4 @@
-import { DataType, Data } from "@common";
+import { DataType, Data } from "../common";
 
 export default class DataGenerator {
   getData(type: DataType): Data {

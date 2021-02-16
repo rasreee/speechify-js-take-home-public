@@ -14,10 +14,8 @@
         "paths": {
             "@common": ["./common"],
             "@common/*": ["./common/*"]
-        }
+        },
+        "experimentalDecorators": true
     },
-    "include": [
-        "./src/client",
-        "./src/common"
-    ]
+    "include": ["./src/client", "./src/common"]
 }

@@ -2,40 +2,42 @@ import * as React from "react";
 import { DataType } from "@common";
 import { SpeechifyClient } from "@common/client";
 import { PlayButton, AddToQueueButton, Message } from "./components";
-import { useState } from "react";
+import ViewModel from "./view-model";
+import { observable } from "mobx";
 
 type Props = {
   client: SpeechifyClient;
   generator: any;
 };
 
-export default function App(props: Props) {
-  const [error, setError] = useState('');
+const App: React.FC<Props> = observable(({ client, generator }) => {
+  const viewModel = new ViewModel({ client, generator });
+
   return (
     <>
       <h1>Speechify CarPlay</h1>
-      <PlayButton client={props.client} />
+      <PlayButton isPlaying={viewModel.isPlaying} onClick={viewModel.handlePlayClick} />
       <div className="add-to-queue-buttons">
         <AddToQueueButton
-          client={props.client}
-          generator={props.generator}
           type={DataType.HTML}
-          onError={setError}
+          onClick={viewModel.handleAddToQueueClick}
+          loading={viewModel.isHTMLLoading}
         />
+
         <AddToQueueButton
-          client={props.client}
-          generator={props.generator}
           type={DataType.TXT}
-          onError={setError}
+          onClick={viewModel.handleAddToQueueClick}
+          loading={viewModel.isTXTLoading}
         />
         <AddToQueueButton
-          client={props.client}
-          generator={props.generator}
           type={DataType.JSON}
-          onError={setError}
+          onClick={viewModel.handleAddToQueueClick}
+          loading={viewModel.isJSONLoading}
         />
       </div>
-      <Message error>{error}</Message>
+      <Message error>{viewModel.error}</Message>
     </>
   );
-}
+})
+
+export default App

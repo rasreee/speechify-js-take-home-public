@@ -2,7 +2,7 @@ import "module-alias/register";
 import express from "express";
 import bodyParser from "body-parser";
 
-import { DataType } from "@common";
+import { DataType } from "../common";
 import Speechify from "./speechify";
 
 import cors from "cors";

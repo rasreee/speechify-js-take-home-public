@@ -1,10 +1,11 @@
-import { Data, StreamChunk } from "@common";
+import { Data, StreamChunk } from "../common";
 import {
   SpeechifyClient,
   ClientState,
   SpeechifyClientEvent,
   ClientEventType,
-} from "@common/client";
+  ClientEventListener
+} from "../common/client";
 import axios, { AxiosResponse } from "axios";
 
 type Endpoints = {
@@ -37,8 +38,7 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
   }
 
   play(): void {
-    window.alert("play client method not implemented");
-    throw new Error("method not implemented");
+    this.setState(ClientState.PLAYING)
   }
 
   pause(): void {
@@ -46,13 +46,19 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
     throw new Error("method not implemented");
   }
 
-  getState(): ClientState {
-    return ClientState.NOT_PLAYING;
+  _state: ClientState = ClientState.NOT_PLAYING
+  setState = (state: ClientState) => this._state = state;
+  getState = (): ClientState => {
+    return this._state;
   }
 
-  subscribe(listener: (event: SpeechifyClientEvent) => void): () => void {
-    window.alert("subscribe client method not implemented");
-    return () => { };
+  subscriber: ClientEventListener | null = null;
+  setSubscriber = (listener: ClientEventListener) => this.subscriber = listener;
+
+  subscribe = (listener: ClientEventListener): () => void => {
+    if (this.subscriber !== null) throw new Error('Already subscribed to: ' + this.subscriber);
+    this.setSubscriber(listener)
+    return () => this.subscriber;
   }
 
   handleError(error: any) {

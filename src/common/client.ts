@@ -16,6 +16,7 @@ type ClientStateEvent = {
 
 export type SpeechifyClientEvent = ClientStateEvent;
 
+export type ClientEventListener = (event: SpeechifyClientEvent) => void
 export interface SpeechifyClient {
   /**
    *  Sends RPC to Speechify Server
