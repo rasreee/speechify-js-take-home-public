@@ -11,6 +11,6 @@ const client = new SpeechifyClient(SERVER_HOST)
 const generator = new DataGenerator()
 
 ReactDOM.render(
-    <App client={client} generator={generator} />,
+    <React.StrictMode><App client={client} generator={generator} /></React.StrictMode>,
     document.getElementById('root')
 )

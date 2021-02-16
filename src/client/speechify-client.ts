@@ -30,6 +30,7 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
             timeout: 1000,
             headers: {
                 Accept: 'application/json',
+                Proxy: '127.0.0.1:8050'
             },
         })
     }
@@ -79,7 +80,7 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
     }
 
     logError(error: AxiosError) {
-        console.log('🆘 ERROR:', this.context, ': ', error.message)
+        console.log('🆘 ERROR:', this.context, ': ', error)
     }
 
     logSuccess = (response: AxiosResponse) =>

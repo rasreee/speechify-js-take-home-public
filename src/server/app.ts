@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import { Application } from 'express'
 import createServer from './server'
 
