@@ -1,9 +1,8 @@
 import { expect } from "chai";
-import { assert } from "console";
 import { Data, DataType } from '../../../common';
+import { createRedisClient } from '../../clients'
 
 import { SpeechifyService } from '../../services'
-const service = new SpeechifyService()
 
 describe("Speechify service checks", function () {
     it("adds to queue without error", (done) => {
@@ -21,8 +20,12 @@ describe("Speechify service checks", function () {
             </body>
         </html>`,
         }
-        service.addToQueue(data).then((result) => {
+
+        const client = createRedisClient()
+        const service = new SpeechifyService(client)
+        service.addToQueue(data).then(async (result) => {
             expect(result).true;
+
             done()
         })
     });

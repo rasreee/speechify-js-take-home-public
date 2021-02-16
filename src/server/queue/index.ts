@@ -1,1 +1,1 @@
-export { default as listeningQueue } from './queue'
+export { default as createListeningQueue } from './listeningQueue'

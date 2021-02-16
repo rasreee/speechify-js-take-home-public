@@ -8,7 +8,7 @@ let redisClient = createRedisClient();
 export default function createRedisSession() {
     return session({
         store: new RedisStore({ client: redisClient }),
-        secret: 'keyboard cat',
+        secret: 'speechify-redis',
         resave: false,
         saveUninitialized: true
     })

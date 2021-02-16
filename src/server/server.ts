@@ -13,11 +13,19 @@ export default function createServer() {
   app.use(bodyParser.json({ type: ['application/json', 'application/*+json'] }));
   app.use(bodyParser.urlencoded({ extended: true }));
 
+  // Redis session
   app.use(createRedisSession())
+  // Handle lost connection
+  app.use(function (req, res, next) {
+    if (!req.session) {
+      return next(new Error('oh no'))
+    }
+    next()
+  })
 
   app.get("/", (req: Request, res: Response, next: NextFunction) => {
     res.send("Hello world!");
-  });
+  }); ``
   app.use(routes);
 
   return app;
