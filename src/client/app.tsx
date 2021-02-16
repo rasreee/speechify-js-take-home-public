@@ -1,16 +1,16 @@
 import * as React from "react";
-import { DataType } from "@common";
-import { SpeechifyClient } from "@common/client";
+import { observer } from "mobx-react-lite"
+import { DataType } from "../common";
+import SpeechifyClient from "./speechify";
 import { PlayButton, AddToQueueButton, Message } from "./components";
 import ViewModel from "./view-model";
-import { observable } from "mobx";
 
 type Props = {
   client: SpeechifyClient;
   generator: any;
 };
 
-const App: React.FC<Props> = observable(({ client, generator }) => {
+const App: React.FC<Props> = observer(({ client, generator }) => {
   const viewModel = new ViewModel({ client, generator });
 
   return (
