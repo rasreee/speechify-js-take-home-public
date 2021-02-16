@@ -1,5 +1,6 @@
+import supertest from 'supertest'
 import express from 'express'
-const createServer = require('../server');
+import createServer from '../server';
 
 describe("express server", () => {
     var app: express.Express;
@@ -12,6 +13,6 @@ describe("express server", () => {
         server.close()
     })
     test("should handle addToQueue request", () => {
-
+        supertest(app).post('/api/addToQueue')
     })
 })

@@ -7,7 +7,7 @@ import express from 'express';
 import Speechify from './speechify';
 
 
-function createServer() {
+export default function createServer() {
   const app = express();
 
   // configure app to use bodyParser()
@@ -30,5 +30,3 @@ function createServer() {
 
   return app;
 }
-
-module.exports = createServer
