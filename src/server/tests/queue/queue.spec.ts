@@ -19,14 +19,12 @@ describe("Listening queue checks", () => {
     })
     it("initializes queue without error", async () => {
         const count = await queue.count()
-        console.log('💜 queue: ', count)
         expect(count).to.equal(0)
     })
 
     it("adds HTML to queue without error", async () => {
         await queue.add(generator.getData(DataType.HTML))
         const count = await queue.count()
-        console.log('💜 # jobs: ', count)
         expect(count).to.equal(1)
     })
 
@@ -34,7 +32,6 @@ describe("Listening queue checks", () => {
         await queue.add(generator.getData(DataType.HTML))
         await queue.add(generator.getData(DataType.JSON))
         const count = await queue.count()
-        console.log('💜 # jobs: ', count)
         expect(count).to.equal(2)
     })
 })
