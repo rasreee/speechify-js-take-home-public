@@ -1,9 +1,9 @@
 import { Router, Request, Response } from "express";
-
-import Speechify from '../speechify'
-const speechify = new Speechify()
+import { SpeechifyService } from '../services'
+const speechify = new SpeechifyService()
 
 const router = Router();
+
 
 // @route POST /getNextChunk
 // @desc  Paginate data

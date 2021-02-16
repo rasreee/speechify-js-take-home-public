@@ -1,15 +1,14 @@
 import { Router, Request, Response } from "express";
 import { Data } from "../../common";
-import Speechify from '../speechify'
-const speechify = new Speechify()
+import { SpeechifyService } from '../services'
+const speechify = new SpeechifyService()
 
 const router = Router();
 
-// @route POST /addToQueue
+// @route POST /api/addToQueue
 // @desc  Add speech data to queue
-router.post("/", (req: Request, res: Response) => {
-  const body: Data = req.body
-  const result = speechify.addToQueue(body);
+router.post("/", async (req: Request, res: Response) => {
+  const result = await speechify.addToQueue(req.body);
   res.status(200).json({ success: result });
 });
 

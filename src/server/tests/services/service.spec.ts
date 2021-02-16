@@ -1,12 +1,12 @@
-import request from "supertest";
+import { expect } from "chai";
+import { assert } from "console";
+import { Data, DataType } from '../../../common';
 
-import createServer from "../../server";
-import { Data, DataType } from "../../../common";
+import { SpeechifyService } from '../../services'
+const service = new SpeechifyService()
 
-const app = createServer();
-
-describe("addToQueue route", function () {
-    it("/api/addToQueue responds with 200", function (done) {
+describe("Speechify service checks", function () {
+    it("adds to queue without error", (done) => {
         const data: Data = {
             type: DataType.HTML,
             source: "https://speechify.com/welcome",
@@ -21,6 +21,9 @@ describe("addToQueue route", function () {
             </body>
         </html>`,
         }
-        request(app).post("/api/addToQueue").send(data).expect(200, done);
+        service.addToQueue(data).then((result) => {
+            expect(result).true;
+            done()
+        })
     });
 });
