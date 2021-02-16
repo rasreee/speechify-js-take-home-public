@@ -15,7 +15,8 @@
             "@common": ["./common"],
             "@common/*": ["./common/*"]
         },
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "esModuleInterop": true
     },
     "include": ["./src/client", "./src/common"]
 }
