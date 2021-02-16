@@ -16,9 +16,9 @@ export const PlayButton = ({ isPlaying, onClick }: Props) => {
     e.preventDefault();
     onClick()
   }
-  return isPlaying ? <button className="main-control play" onClick={handleClick}>
-    PLAY
-      </button> : <button className="main-control pause" onClick={handleClick}>
-      PAUSE
+  return isPlaying ? <button className="main-control pause" onClick={handleClick}>
+    PAUSE
+      </button> : <button className="main-control play" onClick={handleClick}>
+      PLAY
       </button>
 };

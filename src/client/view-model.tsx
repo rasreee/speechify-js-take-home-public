@@ -48,17 +48,16 @@ export default class ViewModel {
 
 
     handlePlayClick = () => {
+        this.isPlaying ? this.client.pause() : this.client.play()
         this.setIsPlaying(!this.isPlaying);
-        this.client.play()
     }
 
     setLoading = (type: DataType, val: boolean) => {
         switch (type) {
-            case DataType.HTML: this.setHTMLLoading(val)
-            case DataType.JSON: this.setJSONLoading(val)
-            case DataType.TXT: this.setTXTLoading(val)
+            case DataType.HTML: return this.setHTMLLoading(val)
+            case DataType.JSON: return this.setJSONLoading(val)
+            case DataType.TXT: return this.setTXTLoading(val)
         }
-        throw new Error('invalid data type' + type)
     }
 
     handleAddToQueueClick = async (type: DataType) => {
