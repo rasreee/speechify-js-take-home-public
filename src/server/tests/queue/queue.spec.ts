@@ -1,9 +1,12 @@
 import Bull from 'bull'
 import { expect } from 'chai'
-import { Data } from '../../../common';
+
+import DataGenerator from '../../../client/generator'
+import { Data, DataType } from '../../../common';
 import createListeningQueue from '../../queue/createListeningQueue'
 describe("Listening queue checks", () => {
     let queue: Bull.Queue<Data>;
+    let generator: DataGenerator = new DataGenerator()
     beforeEach(async () => {
         queue = createListeningQueue()
         const count = await queue.count()
@@ -20,11 +23,18 @@ describe("Listening queue checks", () => {
         expect(count).to.equal(0)
     })
 
-    it("adds to queue without error", async () => {
-        const queue = createListeningQueue()
-        await queue.add({ message: 'hi' })
+    it("adds HTML to queue without error", async () => {
+        await queue.add(generator.getData(DataType.HTML))
         const count = await queue.count()
         console.log('💜 # jobs: ', count)
         expect(count).to.equal(1)
+    })
+
+    it("adds HTML & JSON to queue without error", async () => {
+        await queue.add(generator.getData(DataType.HTML))
+        await queue.add(generator.getData(DataType.JSON))
+        const count = await queue.count()
+        console.log('💜 # jobs: ', count)
+        expect(count).to.equal(2)
     })
 })
