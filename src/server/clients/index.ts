@@ -1,1 +1,1 @@
-export { default as createRedisClient } from './redis-client'
+export { default as createRedisClient } from './redis-client';

@@ -1,16 +1,23 @@
-import React from 'react'
+import React from 'react';
 
-import { Container } from './styles'
+import { Container } from './styles';
 
-type MessageProps = {
-    error?: boolean
-    children: any
+interface MessageProps extends React.HTMLAttributes<HTMLSpanElement> {
+	error?: boolean;
+	children: string;
 }
 
 const Message: React.FC<MessageProps> = ({
-    error = false,
-    children,
-    ...props
-}) => <Container error={error}>{children}</Container>
+	error = false,
+	children,
+	...props
+}) => {
+	if (children.length === 0) return null;
+	return (
+		<Container error={error} {...props}>
+			{children}
+		</Container>
+	);
+};
 
-export default Message
+export default Message;

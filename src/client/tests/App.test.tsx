@@ -1,25 +1,26 @@
-import { render } from '@testing-library/react'
-import React from 'react'
-import App from '../App'
-import DataGenerator from '../generator'
-import SpeechifyClient from '../speechify-client'
-
-type Props = {
-    client: SpeechifyClient
-    generator: any
-}
-const SERVER_HOST = 'http://localhost:8050'
+import { render } from '@testing-library/react';
+import {
+	ClientProvider,
+	DataGeneratorProvider,
+	RootStoreProvider
+} from 'client/contexts';
+import React from 'react';
+import App from '../App';
 
 function renderApp() {
-    const defaultProps: Props = {
-        client: new SpeechifyClient(SERVER_HOST),
-        generator: new DataGenerator(),
-    }
-    return render(<App {...defaultProps} />)
+	return render(
+		<DataGeneratorProvider>
+			<ClientProvider>
+				<RootStoreProvider>
+					<App />
+				</RootStoreProvider>
+			</ClientProvider>
+		</DataGeneratorProvider>
+	);
 }
 
 describe('<App />', () => {
-    test('should display initial App component', () => {
-        const { findByTestId } = renderApp()
-    })
-})
+	test('should display initial App component', () => {
+		const { findByTestId } = renderApp();
+	});
+});

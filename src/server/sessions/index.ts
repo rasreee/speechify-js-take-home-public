@@ -1,1 +1,1 @@
-export { default as createRedisSession } from './redis-session'
+export { default as createRedisSession } from './redis-session';

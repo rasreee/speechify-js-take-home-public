@@ -1,31 +1,26 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react'
-import {
-    SpeechifyClient,
-    SpeechifyClientEvent,
-    ClientEventType,
-    ClientState,
-} from '@common/client'
-import { observer } from 'mobx-react-lite';
-import PlayButtonViewModel from '../view-models/PlayButtonViewModel';
+import React from 'react';
 
-type Props = {
-    viewModel: PlayButtonViewModel;
+interface IPlayButton {
+	className: string;
+	onClick: () => void;
+	isPlaying: boolean;
 }
 
-export const PlayButton = observer(({ viewModel }: Props) => {
+const PlayButton: React.FC<IPlayButton> = ({ className, onClick, isPlaying, ...props }) => {
+	const handleClick: React.MouseEventHandler = (e) => {
+		e.preventDefault();
+		onClick();
+	};
+	return (
+		<button
+			className={className}
+			type="button"
+			onClick={handleClick}
+			{...props}
+		>
+			{isPlaying ? "PAUSE" : "PLAY"}
+		</button>
+	);
+};
 
-    const handleClick: MouseEventHandler = (e) => {
-        e.preventDefault()
-        viewModel.handleClick()
-    }
-
-    return viewModel.isPlaying ? (
-        <button className="main-control pause" onClick={handleClick}>
-            PAUSE
-        </button>
-    ) : (
-            <button className="main-control play" onClick={handleClick}>
-                PLAY
-            </button>
-        )
-})
+export default PlayButton;

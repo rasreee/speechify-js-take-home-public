@@ -1,10 +1,9 @@
-import styled from 'styled-components'
-import theme from '../../theme'
+import styled from 'styled-components';
 
 type Props = {
-    error?: boolean
-}
+	error?: boolean;
+};
 export const Container = styled.div<Props>`
-    font-size: 16px;
-    color: ${(props) => (props.error ? theme.colors.error : theme.colors.text)};
-`
+	font-size: 16px;
+	color: ${(props) => (props.error ? "#fa6f6f" : "black")};
+`;

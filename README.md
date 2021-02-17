@@ -38,21 +38,21 @@ Your server will accept data in the following format:
 
 ```typescript
 enum DataType {
-    HTML,
-    TXT,
-    JSON,
+	HTML,
+	TXT,
+	JSON
 }
 
 type Data = {
-    // Predefined format type
-    type: DataType
+	// Predefined format type
+	type: DataType;
 
-    // Some identifier of the source
-    source: string
+	// Some identifier of the source
+	source: string;
 
-    // The actual content
-    data: string
-}
+	// The actual content
+	data: string;
+};
 ```
 
 Note that with the `type` and `source` properties together, we should be able to determine how to extract the information contained in the `data` property at high fidelity. This requires an assumption that data derived from a given `source` will have consistent structure, but this is generally a reasonable assumption.
@@ -99,12 +99,12 @@ Your server must implement the following API (see `src/server/speechify.ts`):
 
 ```typescript
 export interface Speechify {
-    // Description: Parse `data` and store result for later streaming via getNextChunk()
-    // Returns: `true` if successfully parsed, otherwise `false`
-    addToQueue(data: Data): boolean
+	// Description: Parse `data` and store result for later streaming via getNextChunk()
+	// Returns: `true` if successfully parsed, otherwise `false`
+	addToQueue(data: Data): boolean;
 
-    // Returns: the next unit of content to be presented to the User, `undefined` if there is none
-    getNextChunk(): StreamChunk | undefined
+	// Returns: the next unit of content to be presented to the User, `undefined` if there is none
+	getNextChunk(): StreamChunk | undefined;
 }
 ```
 
@@ -116,35 +116,35 @@ Your client must implement the following API (see `src/client/speechify.ts`):
 
 ```typescript
 export enum ClientEventType {
-    STATE,
+	STATE
 }
 
 export enum ClientState {
-    PLAYING,
-    NOT_PLAYING,
+	PLAYING,
+	NOT_PLAYING
 }
 
 type ClientStateEvent = {
-    type: ClientEventType.STATE
-    state: ClientState
-}
+	type: ClientEventType.STATE;
+	state: ClientState;
+};
 
 export interface SpeechifyClient {
-    // Sends RPC to Speechify Server
-    addToQueue(data: Data): Promise<boolean>
+	// Sends RPC to Speechify Server
+	addToQueue(data: Data): Promise<boolean>;
 
-    // Initiates or resumes **audio playback** of content streamed from Listening Queue
-    play(): void
+	// Initiates or resumes **audio playback** of content streamed from Listening Queue
+	play(): void;
 
-    // Pauses audio playback
-    pause(): void
+	// Pauses audio playback
+	pause(): void;
 
-    // Returns the current state of the client
-    getState(): ClientState
+	// Returns the current state of the client
+	getState(): ClientState;
 
-    // Registers a callback for state change events on the Speechify Client
-    // Returns a callback that cancels the subscription
-    subscribe(listener: (event: ClientStateEvent) => void): () => void
+	// Registers a callback for state change events on the Speechify Client
+	// Returns a callback that cancels the subscription
+	subscribe(listener: (event: ClientStateEvent) => void): () => void;
 }
 ```
 

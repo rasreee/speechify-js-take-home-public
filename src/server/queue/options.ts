@@ -1,7 +1,7 @@
-const PORT = parseInt(<string>process.env.REDIS_PORT, 10) || 6379
-const HOST = process.env.REDIS_HOST
+const PORT = parseInt(<string>process.env.REDIS_PORT, 10) || 6379;
+const HOST = process.env.REDIS_HOST;
 
-const options = { redis: { host: HOST, port: PORT } }
+const options = { redis: { host: HOST, port: PORT } };
 
 // const client = new Redis(PORT, HOST);
 // const subscriber = new Redis(PORT, HOST);
@@ -19,4 +19,4 @@ const options = { redis: { host: HOST, port: PORT } }
 //     },
 // };
 
-export default options
+export default options;

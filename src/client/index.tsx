@@ -1,20 +1,27 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import App from './App'
-import SpeechifyClient from './speechify-client'
-import DataGenerator from './generator'
-import './styles.less'
-
-const SERVER_HOST = 'http://localhost:8050'
-
-const client = new SpeechifyClient(SERVER_HOST)
-const generator = new DataGenerator()
+import './styles.less';
 
 import { enableLogging } from 'mobx-logger';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
+import App from './App';
+import {
+	ClientProvider,
+	DataGeneratorProvider,
+	RootStoreProvider
+} from './contexts';
 
 enableLogging();
 
 ReactDOM.render(
-    <React.StrictMode><App client={client} generator={generator} /></React.StrictMode>,
-    document.getElementById('root')
-)
+	<React.StrictMode>
+		<DataGeneratorProvider>
+			<ClientProvider>
+				<RootStoreProvider>
+					<App />
+				</RootStoreProvider>
+			</ClientProvider>
+		</DataGeneratorProvider>
+	</React.StrictMode>,
+	document.getElementById('root')
+);

@@ -1,22 +1,28 @@
-import React, { useState, MouseEvent } from 'react'
-import { DataType } from '@common'
-import { SpeechifyClient } from '@common/client'
-import DataGenerator from '../generator'
-import AddToQueueButtonViewModel from '../view-models/AddToQueueButtonViewModel'
-import { observer } from 'mobx-react-lite'
+import React, { useState } from 'react';
+import { DataType } from '../../common';
 
-type Props = {
-    viewModel: AddToQueueButtonViewModel
+interface IAddToQueueButton {
+	type: DataType;
+	onClick: (type: DataType) => Promise<void>;
 }
 
-export const AddToQueueButton = observer(({ viewModel }: Props) => {
-    const handleClick = async (e: MouseEvent) => {
-        e.preventDefault()
-        viewModel.handleClick()
-    }
-    return (
-        <div onClick={handleClick} className="add-to-queue-button">
-            {viewModel.isLoading ? 'Submitting...' : `Add ${viewModel.type} Data to Queue`}
-        </div>
-    )
-})
+const AddToQueueButton: React.FC<IAddToQueueButton> = ({ type, onClick }) => {
+	const [loading, setLoading] = useState(false);
+	const handleClick: React.MouseEventHandler = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+		await onClick(type);
+		setLoading(false);
+	};
+	return (
+		<button
+			type="button"
+			onClick={handleClick}
+			className="add-to-queue-button"
+		>
+			{loading ? 'Submitting...' : `Add ${type} Data to Queue`}
+		</button>
+	);
+};
+
+export default AddToQueueButton;

@@ -1,44 +1,34 @@
-import React from 'react'
-import { observer } from 'mobx-react-lite'
-import { DataType } from '../common'
-import SpeechifyClient from './speechify-client'
-import { PlayButton, AddToQueueButton, Message } from './components'
-import ViewModel from './view-model'
-import PlayButtonViewModel from './view-models/PlayButtonViewModel'
-import AddToQueueButtonViewModel from './view-models/AddToQueueButtonViewModel'
+import React from 'react';
+import { AddToQueueControls, Message } from './components';
+import AppViewModel from './view-models/AppViewModel';
+import { useClient, useRootStore, useGenerator } from './hooks';
+import Player from './components/Player';
+import { LoadingPage } from './components/pages';
+import { observer } from 'mobx-react-lite';
 
-type Props = {
-    client: SpeechifyClient
-    generator: any
-}
+const App: React.FC = observer(() => {
+    const client = useClient();
+    const generator = useGenerator();
+    const store = useRootStore();
 
-const App: React.FC<Props> = observer(({ client, generator }) => {
-    const viewModel = new ViewModel({ client, generator })
-    const playButtonViewModel = new PlayButtonViewModel(viewModel)
-    const jsonButtonViewModel = new AddToQueueButtonViewModel(viewModel, DataType.JSON)
-    const txtButtonViewModel = new AddToQueueButtonViewModel(viewModel, DataType.TXT)
-    const htmlButtonViewModel = new AddToQueueButtonViewModel(viewModel, DataType.HTML)
+    if (!client) return <LoadingPage />;
+
+    const viewModel = new AppViewModel({ store, client, generator });
 
     return (
         <>
             <h1>Speechify CarPlay</h1>
-            <PlayButton
-                viewModel={playButtonViewModel}
-            />
-            <div className="add-to-queue-buttons">
-                <AddToQueueButton
-                    viewModel={htmlButtonViewModel}
-                />
-                <AddToQueueButton
-                    viewModel={txtButtonViewModel}
-                />
-                <AddToQueueButton
-                    viewModel={jsonButtonViewModel}
-                />
-            </div>
-            <Message error>{viewModel.error}</Message>
+            <Player
+                onPlay={viewModel.handlePlay}
+                onPause={viewModel.handlePause}
+                isPlaying={viewModel.store.isPlaying}
+                isDisabled={viewModel.store.isDisabled}
+            >
+                <Message error>{store.error}</Message>
+                <AddToQueueControls onAddToQueue={viewModel.handleAddToQueue} />
+            </Player>
         </>
-    )
-})
+    );
+});
 
-export default App
+export default App;

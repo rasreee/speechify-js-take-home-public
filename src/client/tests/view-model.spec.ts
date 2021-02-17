@@ -1,38 +1,18 @@
-import DataGenerator from '../generator'
-import ViewModel from '../view-model'
-import SpeechifyClient from '../speechify-client'
 import { expect } from 'chai';
-import { DataType } from '@common';
-import { isObservable, isObservableProp } from 'mobx';
+import { isObservableProp } from 'mobx';
+import { RootStore } from 'client/stores';
+import DataGenerator from '../generator';
+import AppViewModel from '../view-models/AppViewModel';
+import SpeechifyClient from '../speechify-client';
 
-const SERVER_HOST = 'http://localhost:8050'
+const SERVER_HOST = 'http://localhost:8050';
 
-const client = new SpeechifyClient(SERVER_HOST)
-const generator = new DataGenerator()
+const client = new SpeechifyClient(SERVER_HOST);
+const generator = new DataGenerator();
+const store = new RootStore();
 describe('ViewModel checks', () => {
-    it('should render w/o error', () => {
-        const viewModel = new ViewModel({ client, generator })
-        expect(isObservableProp(viewModel, 'isPlaying')).to.equal(true);
-    })
-
-    it('should change isPlaying observable', () => {
-        const viewModel = new ViewModel({ client, generator })
-        viewModel.handlePlay()
-        expect(viewModel.isPlaying).to.equal(true)
-        viewModel.handlePause()
-        expect(viewModel.isPlaying).to.equal(false)
-    })
-
-    it('should change isJSONLoading observable', async () => {
-        const viewModel = new ViewModel({ client, generator })
-        const promise = viewModel.handleAddToQueueClick(DataType.JSON)
-        expect(viewModel.isJSONLoading).to.equal(true)
-        expect(viewModel.isHTMLLoading).to.equal(false)
-        expect(viewModel.isTXTLoading).to.equal(false)
-        await promise.then(() => {
-            expect(viewModel.isJSONLoading).to.equal(false);
-            expect(viewModel.isHTMLLoading).to.equal(false)
-            expect(viewModel.isTXTLoading).to.equal(false)
-        })
-    })
-})
+	it('should render w/o error', () => {
+		const viewModel = new AppViewModel({ client, generator, store });
+		expect(isObservableProp(viewModel, 'isPlaying')).to.equal(true);
+	});
+});

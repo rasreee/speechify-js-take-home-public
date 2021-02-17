@@ -1,8 +1,8 @@
 Arguments: 
-  /Users/lesleychang/.nvm/versions/node/v12.20.0/bin/node /Users/lesleychang/.yarn/releases/yarn-1.22.10.cjs server
+  /Users/lesleychang/.nvm/versions/node/v12.20.0/bin/node /Users/lesleychang/.yarn/releases/yarn-1.22.10.cjs add -D @types/mobx
 
 PATH: 
-  /Users/lesleychang/.nvm/versions/node/v12.20.0/bin:/Users/lesleychang/google-cloud-sdk/bin:/Users/lesleychang/.yarn/bin:/Users/lesleychang/.config/yarn/global/node_modules/.bin:/usr/local/Cellar/apache-flink/1.11.2/libexec/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Applications/Postgres.app/Contents/Versions/latest/bin:/Users/lesleychang/flutter/bin
+  /Users/lesleychang/.nvm/versions/node/v12.20.0/bin:/Users/lesleychang/google-cloud-sdk/bin:/Users/lesleychang/.yarn/bin:/Users/lesleychang/.config/yarn/global/node_modules/.bin:/usr/local/Cellar/apache-flink/1.11.2/libexec/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Applications/Postgres.app/Contents/Versions/latest/bin:/Users/lesleychang/.nvm/versions/node/v12.20.0/bin:/Users/lesleychang/google-cloud-sdk/bin:/Users/lesleychang/.yarn/bin:/Users/lesleychang/.config/yarn/global/node_modules/.bin:/usr/local/Cellar/apache-flink/1.11.2/libexec/bin:/Users/lesleychang/flutter/bin:/Users/lesleychang/flutter/bin
 
 Yarn version: 
   1.22.10
@@ -14,12 +14,17 @@ Platform:
   darwin x64
 
 Trace: 
-  SyntaxError: /Users/lesleychang/speechify-js-take-home-public/package.json: Unexpected token } in JSON at position 1112
-      at JSON.parse (<anonymous>)
-      at /Users/lesleychang/.yarn/releases/yarn-1.22.10.cjs:1098:57
-      at Generator.next (<anonymous>)
-      at step (/Users/lesleychang/.yarn/releases/yarn-1.22.10.cjs:310:30)
-      at /Users/lesleychang/.yarn/releases/yarn-1.22.10.cjs:321:13
+  Error: https://registry.yarnpkg.com/@types%2fmobx: Not found
+      at Request.params.callback [as _callback] (/Users/lesleychang/.yarn/releases/yarn-1.22.10.cjs:78518:18)
+      at Request.self.callback (/Users/lesleychang/.yarn/releases/yarn-1.22.10.cjs:135160:22)
+      at Request.emit (events.js:314:20)
+      at Request.<anonymous> (/Users/lesleychang/.yarn/releases/yarn-1.22.10.cjs:136132:10)
+      at Request.emit (events.js:314:20)
+      at IncomingMessage.<anonymous> (/Users/lesleychang/.yarn/releases/yarn-1.22.10.cjs:136054:12)
+      at Object.onceWrapper (events.js:420:28)
+      at IncomingMessage.emit (events.js:326:22)
+      at endReadableNT (_stream_readable.js:1241:12)
+      at processTicksAndRejections (internal/process/task_queues.js:84:21)
 
 npm manifest: 
   {
@@ -39,7 +44,7 @@ npm manifest:
           "lint": "eslint . --ext ts --ext tsx --ext js",
           "test:all": "NODE_ENV=test mocha -check-leaks -r ts-node/register -r tsconfig-paths/register \"src/**/tests/**/*.spec.ts\"",
           "test:server": "NODE_ENV=test mocha -check-leaks -r ts-node/register -r tsconfig-paths/register \"src/server/tests/**/*.spec.ts\"",
-          "test:client": "NODE_ENV=test mocha -check-leaks -r ts-node/register -r tsconfig-paths/register \"src/client/tests/**/*.spec.ts\"",
+          "test:client": "NODE_ENV=test mocha -check-leaks -r ts-node/register -r tsconfig-paths/register \"src/client/tests/**/*.spec.ts\""
       },
       "author": "Elias Rahmani",
       "license": "MIT",

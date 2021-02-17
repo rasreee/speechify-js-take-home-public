@@ -1,12 +1,12 @@
 {
-    "files.exclude": {
-        "dist": true,
-        "node_modules": true
-    },
-    "eslint.alwaysShowStatus": true,
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    },
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+	"files.exclude": {
+		"dist": true,
+		"node_modules": true
+	},
+	"eslint.alwaysShowStatus": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true
 }
