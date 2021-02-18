@@ -8,15 +8,17 @@ import createListeningQueue from '../../queue/createListeningQueue';
 describe('Listening queue checks', () => {
 	let queue: Bull.Queue<Data>;
 	const generator: DataGenerator = new DataGenerator();
-	beforeEach(async () => {
+	beforeEach(async (done) => {
 		queue = createListeningQueue();
 		const count = await queue.count();
 		if (count > 0) {
 			await queue.empty();
 		}
+		done()
 	});
-	afterEach(() => {
-		queue.close(true);
+	afterEach(async (done) => {
+		await queue.close(true);
+		done()
 	});
 	it('initializes queue without error', async () => {
 		const count = await queue.count();

@@ -12,8 +12,9 @@ interface IPlayer extends React.HTMLAttributes<HTMLDivElement> {
 
 const Player: React.FC<IPlayer> = ({ isPlaying, onPlay, onPause, isDisabled, children, ...props }) => {
 	const handleClick = () => {
-		if (isDisabled) return;
-		return isPlaying ? onPause() : onPlay()
+		if (!isDisabled) {
+			return isPlaying ? onPause() : onPlay()
+		}
 	};
 	return (
 		<Container  {...props}>

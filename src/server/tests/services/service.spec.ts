@@ -7,15 +7,17 @@ import { SpeechifyService } from '../../services';
 describe('Speechify service checks', () => {
 	let service: SpeechifyService;
 	const generator: DataGenerator = new DataGenerator();
-	beforeEach(async () => {
+	beforeEach(async (done) => {
 		service = new SpeechifyService();
 		const count = await service.queue.count();
 		if (count > 0) {
 			await service.queue.empty();
 		}
+		done()
 	});
-	afterEach(() => {
-		service.queue.close(true);
+	afterEach(async (done) => {
+		await service.queue.close(true);
+		done()
 	});
 	it('adds to queue without error', async () => {
 		const data: Data = generator.getData(DataType.HTML);

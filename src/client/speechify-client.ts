@@ -52,24 +52,20 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
 		return false;
 	}
 
-	play(): void {}
+	play(): void {
+		window.speechSynthesis.speak(new SpeechSynthesisUtterance("hello there"));
+	}
 
-	pause(): void {}
+	pause(): void { }
 
 	getState(): ClientState {
 		return ClientState.NOT_PLAYING;
 	}
 
-	subscriber: ClientEventListener | null = null;
-
-	setSubscriber = (listener: ClientEventListener) =>
-		(this.subscriber = listener);
 
 	subscribe = (listener: ClientEventListener): (() => void) => {
-		if (this.subscriber !== null)
-			throw new Error(`Already subscribed to: ${this.subscriber}`);
-		this.setSubscriber(listener);
-		return () => this.subscriber;
+		listener.bind(this)
+		return () => console.log(`subscribed to listener: ${listener}`);
 	};
 
 	logError(error: AxiosError) {

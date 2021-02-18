@@ -3,7 +3,7 @@ import { AddToQueueControls, Message, QueueInfo } from './components';
 import AppViewModel from './view-models/AppViewModel';
 import { useClient, useRootStore, useGenerator } from './hooks';
 import Player from './components/Player';
-import { LoadingPage } from './components/pages';
+import { LoadingPage } from './pages';
 import { observer } from 'mobx-react-lite';
 
 const App: React.FC = observer(() => {
@@ -23,7 +23,8 @@ const App: React.FC = observer(() => {
                 onPause={viewModel.handlePause}
                 isPlaying={viewModel.store.isPlaying}
                 isDisabled={viewModel.store.isDisabled}
-            ><QueueInfo queue={viewModel.store.queue} />
+            >
+                <QueueInfo queue={viewModel.store.queue} />
                 <Message error>{store.error}</Message>
                 <AddToQueueControls onAddToQueue={viewModel.handleAddToQueue} />
             </Player>
