@@ -2,7 +2,6 @@ import { expect } from 'chai';
 
 import { DataType } from '@common';
 
-import app from '../../server/app';
 import DataGenerator from '../generator';
 import SpeechifyClient from '../speechify-client';
 
@@ -15,7 +14,7 @@ describe('Client service checks', () => {
 		client = new SpeechifyClient(SERVER_HOST);
 	});
 
-	afterEach(() => {});
+	afterEach(() => { });
 
 	it('should connect to server w/o error', async () => {
 		const result = await client.connect();

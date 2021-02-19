@@ -14,16 +14,6 @@ export default function createServer() {
 	);
 	app.use(bodyParser.urlencoded({ extended: true }));
 
-	// // Redis session
-	// app.use(createRedisSession())
-	// // Handle lost connection
-	// app.use((req, res, next) => {
-	//     if (!req.session) {
-	//         return next(new Error('Lost connection to session...'))
-	//     }
-	//     next()
-	// })
-
 	app.get('/', (req: Request, res: Response, next: NextFunction) => {
 		res.sendStatus(200);
 	});

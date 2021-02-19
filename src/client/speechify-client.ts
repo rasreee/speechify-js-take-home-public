@@ -20,6 +20,10 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
 
 	client: AxiosInstance;
 
+	listener: ClientEventListener | null = null;
+
+	currentChunk: StreamChunk = '';
+
 	constructor(host: string) {
 		this.endpoints = {
 			addToQueue: '/api/addToQueue',
@@ -52,19 +56,52 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
 		return false;
 	}
 
-	play(): void {
-		window.speechSynthesis.speak(new SpeechSynthesisUtterance("hello there"));
+	async play(): Promise<void> {
+		const state = this.getState();
+		if (state === ClientState.PLAYING) {
+			return;
+		}
+
+		if (speechSynthesis.paused) {
+			return speechSynthesis.resume()
+		}
+
+		await this.loadNextChunk()
+		const utterance = new SpeechSynthesisUtterance(this.currentChunk)
+		speechSynthesis.speak(utterance)
 	}
 
-	pause(): void { }
+	pause(): void {
+		const state = this.getState();
+		if (state === ClientState.NOT_PLAYING) {
+			return;
+		}
+
+		return speechSynthesis.pause()
+	}
 
 	getState(): ClientState {
-		return ClientState.NOT_PLAYING;
+		return speechSynthesis.speaking ? ClientState.PLAYING : ClientState.NOT_PLAYING;
+	}
+
+
+	async loadNextChunk(): Promise<void> {
+		try {
+			const response = await this.client.get(this.endpoints.getNextChunk);
+			if (response.status === 200) {
+				const chunk = response.data.chunk
+				this.logSuccess(response)
+				this.currentChunk = chunk
+			}
+		} catch (err) {
+			this.logError(err)
+		}
 	}
 
 
 	subscribe = (listener: ClientEventListener): (() => void) => {
-		listener.bind(this)
+		if (this.listener) throw new Error('Already subscribed to a listener')
+		this.listener = listener;
 		return () => console.log(`subscribed to listener: ${listener}`);
 	};
 

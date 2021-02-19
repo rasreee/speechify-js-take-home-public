@@ -1,29 +1,46 @@
-import Bull from 'bull';
+import { DataProcessor } from '.';
 
-import { Data, StreamChunk } from '../../common';
+import { Data, DataType, StreamChunk } from '../../common';
 import { SpeechifyServer } from '../../common/server';
-import { createListeningQueue } from '../queue';
-
 export default class SpeechifyService implements SpeechifyServer {
-	queue: Bull.Queue<Data>;
+	public queue: Array<string> = []
 
-	constructor() {
-		this.queue = createListeningQueue();
+	private static instance: SpeechifyServer;
+
+	private constructor() { }
+
+	static getInstance(): SpeechifyServer {
+		if (!this.instance) {
+			this.instance = new this()
+		}
+		return this.instance;
 	}
 
-	async addToQueue(data: Data): Promise<boolean> {
+	addToQueue(data: Data): boolean {
 		console.log('\n🍜 adding to queue: ', JSON.stringify(data));
-		try {
-			await this.queue.add(data);
-			return true;
-		} catch (err) {
-			console.error('\n🍜 error on addToQueue: ', err);
-			return false;
-		}
+		const processed = this.processData(data);
+		this.queue.push(processed)
+		return true;
 	}
 
 	getNextChunk(): StreamChunk | undefined {
-		console.error('getNextChunk not implemented');
-		return undefined;
+		return this.queue.shift()
 	}
+
+	/**
+	 * Using the type and data parameters of the input,
+	 * appropriately process the data into a string to be
+	 * read by speechSynthesis
+	 */
+	processData({ type, data }: Data): string {
+		switch (type) {
+			case DataType.HTML:
+				return DataProcessor.parseHTML(data)
+			case DataType.JSON:
+				return DataProcessor.parseJSON(data)
+			case DataType.TXT:
+				return DataProcessor.parseHTML(data)
+		}
+	}
+
 }
