@@ -72,11 +72,7 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
 		const utterance = SpeechSynthesisService.createUtterance({
 			text: this.currentChunk,
 			onEnd: async () => {
-				this.setState(ClientState.NOT_PLAYING)
-				this.listener!({ type: ClientEventType.STATE, state: ClientState.NOT_PLAYING })
 				await this.loadNextChunk()
-				this.setState(ClientState.PLAYING)
-				this.listener!({ type: ClientEventType.STATE, state: ClientState.PLAYING })
 			}
 		})
 		this.setState(ClientState.PLAYING)

@@ -39,7 +39,7 @@ export default class SpeechifyService implements SpeechifyServer {
 			case DataType.JSON:
 				return DataProcessor.parseJSON(data)
 			case DataType.TXT:
-				return DataProcessor.parseHTML(data)
+				return DataProcessor.parseTXT(data)
 		}
 	}
 
