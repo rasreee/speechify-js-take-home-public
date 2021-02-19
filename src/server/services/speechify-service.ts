@@ -28,7 +28,7 @@ export default class SpeechifyService implements SpeechifyServer {
 	}
 
 	/**
-	 * Using the type and data parameters of the input,
+	 * Using the type, source, and data parameters of the input,
 	 * appropriately process the data into a string to be
 	 * read by speechSynthesis
 	 */
