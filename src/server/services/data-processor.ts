@@ -1,3 +1,5 @@
+import { StockTickerFormatter } from ".";
+
 const DataProcessor = {
     parseHTML: (data: string) => {
         return data;
@@ -10,11 +12,9 @@ const DataProcessor = {
      *              Property name + its value
      */
     parseJSON: (data: string) => {
-        console.log('\n🍮 parsing JSON data\n');
 
         let entries = Object.entries(JSON.parse(data))
 
-        console.log('\n🍮 entries: ', entries, '\n');
         let result = ''
 
         entries.forEach(entry => {
@@ -24,9 +24,25 @@ const DataProcessor = {
             result += '\n'
         })
 
-        console.log('\n🍮 result: ', result, '\n');
         return result;
     },
-    parseTXT: (data: string) => { return data; },
+    /**
+     * Naive solution of reading TXT:
+     *      Assuming all .txt files are of the same format (stock tickers):
+     *      - Get a split version of the data (split by \n first, then lines by \t)
+     *      - Join by ' . ' to get the result
+     */
+    parseTXT: (data: string) => {
+        // return data.split('\n').join(' . ').split('\t').join(' . ');
+        const lines = data.split('\n')
+
+        let list: string[] = []
+        for (let line of lines) {
+            const tabs = line.split('\t')
+            StockTickerFormatter.format(tabs)
+            list.push(StockTickerFormatter.format(tabs))
+        }
+        return list.join(' . ');
+    },
 }
 export default DataProcessor

@@ -26,9 +26,9 @@ describe("DataProcessor checks", () => {
     })
 
     it("should parse TXT naively", () => {
-        const data = JSON.stringify('AMZN\t3232.58\tUSD\nFB\t272.14\tUSD\nAAPL\t142.06\tUSD\nNFLX\t523.28\tUSD')
+        const data = 'AMZN\t3232.58\tUSD\nFB\t272.14\tUSD\nAAPL\t142.06\tUSD\nNFLX\t523.28\tUSD'
         const parsed = DataProcessor.parseTXT(data)
-        expect(parsed).to.equal('AMZN $3232.58')
+        expect(parsed).to.equal('the price of amazon is $3232.58 . the price of facebook is $272.14 . the price of apple is $142.06 . the price of netflix is $523.28')
     })
 
 })
