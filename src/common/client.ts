@@ -9,14 +9,15 @@ export enum ClientState {
 	NOT_PLAYING
 }
 
-type ClientStateEvent = {
+/**
+ * Event for Client State changes
+ */
+export type ClientStateEvent = {
 	type: ClientEventType.STATE;
 	state: ClientState;
 };
 
-export type SpeechifyClientEvent = ClientStateEvent;
-
-export type ClientEventListener = (event: SpeechifyClientEvent) => void;
+export type ClientStateEventListener = (event: ClientStateEvent) => void;
 export interface SpeechifyClient {
 	/**
 	 *  Sends RPC to Speechify Server

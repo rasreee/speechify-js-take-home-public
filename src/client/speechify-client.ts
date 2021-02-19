@@ -3,9 +3,8 @@ import { Data, StreamChunk } from '../common';
 import {
 	SpeechifyClient,
 	ClientState,
-	SpeechifyClientEvent,
-	ClientEventType,
-	ClientEventListener
+	ClientStateEventListener,
+	ClientEventType
 } from '../common/client';
 
 type Endpoints = {
@@ -20,9 +19,11 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
 
 	client: AxiosInstance;
 
-	listener: ClientEventListener | null = null;
+	listener: ClientStateEventListener | null = null;
 
 	currentChunk: StreamChunk = '';
+
+	state: ClientState = ClientState.NOT_PLAYING
 
 	constructor(host: string) {
 		this.endpoints = {
@@ -40,10 +41,9 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
 	}
 
 	async addToQueue(data: Data): Promise<boolean> {
-		const endpoint = this.endpoints.addToQueue;
 		try {
 			const response = await this.client.post<{ success: boolean }>(
-				endpoint,
+				this.endpoints.addToQueue,
 				data
 			);
 			if (response.data.success) {
@@ -63,12 +63,19 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
 		}
 
 		if (speechSynthesis.paused) {
+			this.setState(ClientState.PLAYING)
 			return speechSynthesis.resume()
 		}
 
 		await this.loadNextChunk()
 		const utterance = new SpeechSynthesisUtterance(this.currentChunk)
+		// Load the next chunk from the server
+		utterance.onend = async () => {
+			this.listener!({ type: ClientEventType.STATE, state: ClientState.NOT_PLAYING })
+			await this.loadNextChunk()
+		}
 		speechSynthesis.speak(utterance)
+		this.setState(ClientState.PLAYING)
 	}
 
 	pause(): void {
@@ -76,12 +83,18 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
 		if (state === ClientState.NOT_PLAYING) {
 			return;
 		}
-
+		this.setState(ClientState.NOT_PLAYING)
 		return speechSynthesis.pause()
 	}
 
 	getState(): ClientState {
-		return speechSynthesis.speaking ? ClientState.PLAYING : ClientState.NOT_PLAYING;
+		return this.state;
+	}
+
+	setState(state: ClientState): void {
+		this.state = state;
+		if (!this.listener) return
+		this.listener({ type: ClientEventType.STATE, state: state })
 	}
 
 
@@ -99,8 +112,8 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
 	}
 
 
-	subscribe = (listener: ClientEventListener): (() => void) => {
-		if (this.listener) throw new Error('Already subscribed to a listener')
+	subscribe = (listener: ClientStateEventListener): (() => void) => {
+		if (this.listener) return () => console.log('already subscribed')
 		this.listener = listener;
 		return () => console.log(`subscribed to listener: ${listener}`);
 	};

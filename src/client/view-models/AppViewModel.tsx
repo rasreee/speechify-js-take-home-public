@@ -1,5 +1,5 @@
 import { RootStore } from 'client/stores';
-import { DataType } from '../../common';
+import { ClientState, ClientStateEvent, DataType } from '../../common';
 import SpeechifyClient from '../speechify-client';
 
 export type AppViewModelProps = {
@@ -19,6 +19,12 @@ export default class AppViewModel {
 		this.client = client;
 		this.generator = generator;
 		this.store = store;
+
+		this.client.subscribe(this.handleClientStateEvent);
+	}
+
+	handleClientStateEvent = (event: ClientStateEvent) => {
+		console.log('🌜 ClientStateEvent detected: ', event);
 	}
 
 	handlePlay = () => {
@@ -35,8 +41,8 @@ export default class AppViewModel {
 		const data = this.generator.getData(type);
 		try {
 			await this.client.addToQueue(data);
-			const newList = [...this.store.queue, data];
-			this.store.setQueue(newList);
+			const newQueue = [...this.store.queue, data]
+			this.store.setQueue(newQueue);
 		} catch (error) {
 			this.store.setError(
 				`Oops! Failed to add ${type} to the queue\n${error}`
