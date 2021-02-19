@@ -1,0 +1,1 @@
+export { default as SpeechSynthesisService } from './speech-synthesis'

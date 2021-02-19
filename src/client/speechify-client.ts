@@ -6,6 +6,7 @@ import {
 	ClientStateEventListener,
 	ClientEventType
 } from '../common/client';
+import { SpeechSynthesisService } from './services';
 
 type Endpoints = {
 	addToQueue: string;
@@ -57,32 +58,37 @@ export default class SpeechifyClientImpl implements SpeechifyClient {
 	}
 
 	async play(): Promise<void> {
-		const state = this.getState();
-		if (state === ClientState.PLAYING) {
-			return;
-		}
-
 		if (speechSynthesis.paused) {
 			this.setState(ClientState.PLAYING)
 			return speechSynthesis.resume()
 		}
-
-		await this.loadNextChunk()
-		const utterance = new SpeechSynthesisUtterance(this.currentChunk)
 		// Load the next chunk from the server
-		utterance.onend = async () => {
-			this.listener!({ type: ClientEventType.STATE, state: ClientState.NOT_PLAYING })
-			await this.loadNextChunk()
-		}
-		speechSynthesis.speak(utterance)
+		await this.loadNextChunk()
+		this.playCurrentChunk()
+	}
+
+	playCurrentChunk(): void {
+		console.log('Playing currentChunk: ', this.currentChunk)
+		const utterance = SpeechSynthesisService.createUtterance({
+			text: this.currentChunk,
+			onEnd: async () => {
+				this.setState(ClientState.NOT_PLAYING)
+				this.listener!({ type: ClientEventType.STATE, state: ClientState.NOT_PLAYING })
+				await this.loadNextChunk()
+				this.setState(ClientState.PLAYING)
+				this.listener!({ type: ClientEventType.STATE, state: ClientState.PLAYING })
+			}
+		})
 		this.setState(ClientState.PLAYING)
+		this.listener!({ type: ClientEventType.STATE, state: ClientState.PLAYING })
+
+		// Must call cancel() right before calling speak(utterance)
+		speechSynthesis.cancel()
+		speechSynthesis.speak(utterance)
 	}
 
 	pause(): void {
 		const state = this.getState();
-		if (state === ClientState.NOT_PLAYING) {
-			return;
-		}
 		this.setState(ClientState.NOT_PLAYING)
 		return speechSynthesis.pause()
 	}
