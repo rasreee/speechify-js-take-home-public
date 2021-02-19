@@ -19,13 +19,25 @@ const CURRENCY_SYMBOLS: Record<string, string> = {
     'USD': '$'
 }
 
+
+function joinTabs(arr: string[]) {
+    assert(arr.length === 3)
+    const symbol: string = arr[2]
+    const name: string = arr[0]
+    const price: string = arr[1]
+    return `the price of ${STOCK_NAMES[name]} is ${CURRENCY_SYMBOLS[symbol]}${price}`
+}
+
 const StockTickerFormatter = {
-    format: (arr: string[]) => {
-        assert(arr.length === 3)
-        const symbol: string = arr[2]
-        const name: string = arr[0]
-        const price: string = arr[1]
-        return `the price of ${STOCK_NAMES[name]} is ${CURRENCY_SYMBOLS[symbol]}${price}`
+    format: (data: string) => {
+        const lines = data.split('\n')
+
+        let list: string[] = []
+        for (let line of lines) {
+            const tabs = line.split('\t')
+            list.push(joinTabs(tabs))
+        }
+        return list.join(' . ');
     }
 }
 

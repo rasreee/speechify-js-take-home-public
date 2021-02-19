@@ -16,7 +16,7 @@
 		"test:all": "NODE_ENV=test mocha -check-leaks -r ts-node/register -r tsconfig-paths/register \"src/**/tests/**/*.spec.ts\"",
 		"test:server": "NODE_ENV=test mocha -check-leaks -r ts-node/register -r tsconfig-paths/register \"src/server/tests/**/*.spec.ts\"",
 		"test:client": "NODE_ENV=test mocha -check-leaks -r ts-node/register -r tsconfig-paths/register \"src/client/tests/**/*.spec.ts\"",
-		"test": "NODE_ENV=test mocha -check-leaks -r ts-node/register -r tsconfig-paths/register \"src/server/tests/services/data-processor.spec.ts\""
+		"test": "NODE_ENV=test mocha -check-leaks -r ts-node/register -r tsconfig-paths/register \"src/server/tests/services/html-formatter.spec.ts\""
 	},
 	"author": "Elias Rahmani",
 	"license": "MIT",

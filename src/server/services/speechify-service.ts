@@ -32,14 +32,14 @@ export default class SpeechifyService implements SpeechifyServer {
 	 * appropriately process the data into a string to be
 	 * read by speechSynthesis
 	 */
-	processData({ type, data }: Data): string {
+	processData({ source, type, data }: Data): string {
 		switch (type) {
 			case DataType.HTML:
-				return DataProcessor.parseHTML(data)
+				return DataProcessor.parseHTML(source, data)
 			case DataType.JSON:
-				return DataProcessor.parseJSON(data)
+				return DataProcessor.parseJSON(source, data)
 			case DataType.TXT:
-				return DataProcessor.parseTXT(data)
+				return DataProcessor.parseTXT(source, data)
 		}
 	}
 
