@@ -9,5 +9,6 @@ const startServer = () => {
 	});
 	return app;
 };
+const app = startServer()
 
-export default startServer();
+module.exports = app
